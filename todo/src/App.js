@@ -1,26 +1,19 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import React from 'react';
-import Navbar from './components/Navbar';
-import Bodycardtodo from './components/bodycardtodo';
-import Footer from './components/Footer';
-import './App.css';
-
-function App() {
+import TaskForm from './components/TaskForm';
+import TaskFilter from './components/TaskFilter';
+import TaskList from './components/TaskList';
+import "./App.css"
+const App = () => {
   return (
-    <div className="App">
-      <Router> 
-        <Navbar />
-        <hr></hr>
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Bodycardtodo />} />
-          </Routes>
-        </div>
-        <hr></hr>
-        <Footer />
-      </Router> 
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-lg">
+        <h1 className="text-3xl font-semibold mb-4">Task Management App</h1>
+        <TaskForm />
+        <TaskFilter />
+        <TaskList />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

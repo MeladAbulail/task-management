@@ -1,16 +1,3 @@
 {
-  "tasks": [
-    {
-      "title": "To-do 1",
-      "description": "this is a test1",
-      "dueDate": "2003-11-12",
-      "id": 1
-    },
-    {
-      "title": "To-Do2",
-      "description": "this is a test2",
-      "dueDate": "1111-11-11",
-      "id": 2
-    }
-  ]
+  "tasks": []
 }

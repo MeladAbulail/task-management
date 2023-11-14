@@ -1,78 +1,64 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../actions/tasks';
 
-const TaskForm = ({ onAddTask }) => {
-  const [task, setTask] = useState({
-    title: '',
-    description: '',
-    dueDate: '',
-  });
+const TaskForm = () => {
+  const dispatch = useDispatch();
+  const [task, setTask] = useState({ title: '', description: '', dueDate: '', priority: 'low' });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setTask((prevTask) => ({
-      ...prevTask,
-      [name]: value,
-    }));
+    setTask({
+      ...task,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddTask(task);
-    setTask({
-      title: '',
-      description: '',
-      dueDate: '',
-    });
+    dispatch(addTask({ ...task, id: Date.now(), completed: false }));
+    setTask({ title: '', description: '', dueDate: '', priority: 'low' });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4">
-      <div className="mb-4">
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Title
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          value={task.title}
-          onChange={handleChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-          required
-        />
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          value={task.description}
-          onChange={handleChange}
-          rows="3"
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        ></textarea>
-      </div>
-
-      <div className="mb-4">
-        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700">
-          Due Date
-        </label>
-        <input
-          type="date"
-          id="dueDate"
-          name="dueDate"
-          value={task.dueDate}
-          onChange={handleChange}
-          className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-        />
-      </div>
-
+    <form className="w-full max-w-sm mx-auto my-8 p-8 bg-gray-200 rounded shadow-md">
+      <label className="block text-sm font-semibold text-gray-700">Title:</label>
+      <input
+        type="text"
+        name="title"
+        value={task.title}
+        onChange={handleChange}
+        className="block w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:border-blue-500"
+      />
+      <label className="block text-sm font-semibold text-gray-700 mt-4">Description:</label>
+      <input
+        type="text"
+        name="description"
+        value={task.description}
+        onChange={handleChange}
+        className="block w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:border-blue-500"
+      />
+      <label className="block text-sm font-semibold text-gray-700 mt-4">Due Date:</label>
+      <input
+        type="date"
+        name="dueDate"
+        value={task.dueDate}
+        onChange={handleChange}
+        className="block w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:border-blue-500"
+      />
+      <label className="block text-sm font-semibold text-gray-700 mt-4">Priority:</label>
+      <select
+        name="priority"
+        value={task.priority}
+        onChange={handleChange}
+        className="block w-full px-4 py-2 mt-2 border rounded focus:outline-none focus:border-blue-500"
+      >
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
       <button
         type="submit"
-        className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 transition duration-300"
+        className="w-full bg-green-500 text-white py-2 mt-4 rounded hover:bg-green-600 focus:outline-none focus:shadow-outline"
       >
         Add Task
       </button>

@@ -1,45 +1,102 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import TaskForm from './TaskForm';
-import { addTask, deleteTask } from '../redux/actions';
-
+import axios from 'axios';
+import { setTasks, addTask, deleteTask } from '../redux/actions';
 
 const BodyCardTodo = () => {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.tasks);
+  const [newTask, setNewTask] = useState('');
 
   useEffect(() => {
-    // Fetch tasks or any initial data here if needed
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/tasks');
+        dispatch(setTasks(response.data));
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
 
-  const handleAddTask = (newTask) => {
-    dispatch(addTask(newTask));
+    fetchData();
+  }, [dispatch]);
+
+  const handleAddTask = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/tasks', {
+        title: newTask,
+      });
+
+      dispatch(addTask(response.data));
+      setNewTask('');
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   };
 
-  const handleDeleteTask = (taskId) => {
-    dispatch(deleteTask(taskId));
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await axios.delete(`http://localhost:3001/tasks/${taskId}`);
+      dispatch(deleteTask(taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 bg-white shadow-md rounded-md mt-8">
-      <h2 className="text-2xl font-bold mb-4">Your Todo List</h2>
-      <TaskForm onAddTask={handleAddTask} />
-      
-      {/* Display tasks or other components as needed */}
-      <div className="mt-8">
+    <div style={{ maxWidth: '600px', margin: 'auto', padding: '20px' }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Todo List</h1>
+      <ul style={{ listStyle: 'none', padding: 0 }}>
         {tasks.map((task) => (
-          <div key={task.id} className="bg-gray-100 p-4 mb-4 rounded-md">
-            <h3 className="text-lg font-semibold">{task.title}</h3>
-            <p className="text-gray-700">{task.description}</p>
-            <p className="text-gray-500">Due Date: {task.dueDate}</p>
+          <li
+            key={task.id}
+            style={{
+              border: '1px solid #ccc',
+              borderRadius: '5px',
+              padding: '10px',
+              marginBottom: '10px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            {task.title}{' '}
             <button
+              style={{
+                backgroundColor: '#ff6961',
+                color: 'white',
+                border: 'none',
+                padding: '5px 10px',
+                borderRadius: '3px',
+                cursor: 'pointer',
+              }}
               onClick={() => handleDeleteTask(task.id)}
-              className="bg-red-500 text-white p-2 rounded-md mt-2 hover:bg-red-600 transition duration-300"
             >
               Delete
             </button>
-          </div>
+          </li>
         ))}
+      </ul>
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <input
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          style={{ padding: '8px', marginRight: '10px' }}
+        />
+        <button
+          style={{
+            backgroundColor: '#4caf50',
+            color: 'white',
+            border: 'none',
+            padding: '8px 16px',
+            borderRadius: '3px',
+            cursor: 'pointer',
+          }}
+          onClick={handleAddTask}
+        >
+          Add Task
+        </button>
       </div>
     </div>
   );

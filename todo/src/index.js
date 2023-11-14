@@ -1,17 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import store from './redux/store';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './App';
-import './index.css';
+import tasksReducer from './redux/reducers/tasksReducer';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+const store = createStore(tasksReducer);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
-reportWebVitals();
