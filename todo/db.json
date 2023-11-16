@@ -1,0 +1,40 @@
+{
+  "Tasks": [
+    {
+      "title": "asdasdas",
+      "description": "sdadsad",
+      "dueDate": "0111-11-11",
+      "priority": "medium",
+      "status": "Incomplete",
+      "id": 2
+    },
+    {
+      "title": "asdas",
+      "description": "asdas",
+      "dueDate": "0005-05-05",
+      "priority": "high",
+      "status": "Incomplete",
+      "id": 3
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "Melad",
+      "email": "melad.k.abulail@gmail.com",
+      "password": "Mm125125125"
+    },
+    {
+      "id": "2",
+      "username": "Ayoub",
+      "email": "Ayoub@gmail.com",
+      "password": "Ayoub@@00"
+    },
+    {
+      "id": "3",
+      "username": "melad2",
+      "email": "meladabolail@gmail.com",
+      "password": "MMMmmm112233"
+    }
+  ]
+}
